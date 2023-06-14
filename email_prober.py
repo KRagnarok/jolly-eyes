@@ -1,5 +1,3 @@
-from datetime import datetime
-from typing import Optional
 from dataclasses import dataclass
 
 @dataclass
@@ -10,19 +8,26 @@ class EmailAccountInfo():
     server_address: str
     server_port: int = -1
 
-@dataclass
-class EmailBasicInfo():
-    author_name: str
-    subject: str
-    body: str
-    time: datetime 
-        
-class EmailFilter():
+class BasicEmailFilter():
 
-    def filter_email(self, email_info : EmailBasicInfo) -> bool:
+    def __init__(self) -> None:
+        pass
+
+    def get_filtered_emails(self, all_emails):
+        self._all_emails = all_emails
+         
+class BasicEmailHolder():
+
+    def __init__(self, all_emails) -> None:
+        self._all_available_emails = all_emails
+
+    def apply_filter(self):
         raise NotImplementedError()
 
-class EmailProber():
+    def get_emails(self):
+        raise NotImplementedError()
+
+class BasicEmailProber():
     
     def __init__(self, email_acc_info : EmailAccountInfo):
         self._email_acc_info = email_acc_info 
@@ -31,10 +36,5 @@ class EmailProber():
     def connect_and_auth(self):
         raise NotImplementedError()
 
-    def get_all_emails(self, filter : Optional[EmailFilter] = None):
+    def get_all_emails(self):
         raise NotImplementedError()
-
-    def get_unread_emails(self, filter : Optional[EmailFilter] = None):
-        raise NotImplementedError()
-
-    

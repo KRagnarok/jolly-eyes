@@ -34,7 +34,7 @@ class EmailProber():
     def get_all_emails(self, filter : Optional[EmailFilter] = None):
         raise NotImplementedError()
 
-    def get_new_emails(self):
+    def get_unread_emails(self, filter : Optional[EmailFilter] = None):
         raise NotImplementedError()
 
     

@@ -21,13 +21,13 @@ class BasicEmailHolder():
     def __init__(self, all_emails) -> None:
         self._all_available_emails = all_emails
 
-    def apply_filter(self):
+    def apply_filter(self, filter : BasicEmailFilter):
         raise NotImplementedError()
 
     def get_emails(self):
         raise NotImplementedError()
 
-class BasicEmailProber():
+class BasicEmailConnector():
     
     def __init__(self, email_acc_info : EmailAccountInfo):
         self._email_acc_info = email_acc_info 

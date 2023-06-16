@@ -1,5 +1,5 @@
 from ..basic.connector import BasicEmailHolder, BasicEmailConnector, EmailAccountInfo
-from .filters import BasicExchangeFilter
+from ..basic.filters import BasicEmailFilter
 from exchangelib import DELEGATE, Account, Configuration, Credentials
 
 class ExchangeEmailHolder(BasicEmailHolder):
@@ -8,8 +8,8 @@ class ExchangeEmailHolder(BasicEmailHolder):
         super().__init__(all_emails)
         self._q_functions: list = []
 
-    def apply_filter(self, filter : BasicExchangeFilter):
-        self._q_functions.append(filter.get_query_function())
+    def apply_filter(self, filter : BasicEmailFilter):
+        self._q_functions.append(filter.get_filter_func())
         return self
 
     def get_emails(self):

@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from .filters import BasicEmailFilter
+
 @dataclass
 class EmailAccountInfo():
     username: str
@@ -8,14 +10,6 @@ class EmailAccountInfo():
     server_address: str
     server_port: int = -1
 
-class BasicEmailFilter():
-
-    def __init__(self) -> None:
-        pass
-
-    def get_filtered_emails(self, all_emails):
-        self._all_emails = all_emails
-         
 class BasicEmailHolder():
 
     def __init__(self, all_emails) -> None:

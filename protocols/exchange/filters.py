@@ -2,30 +2,20 @@ from typing import Optional
 import datetime
 
 from exchangelib import Q
-from ..basic.connector import BasicEmailFilter
+from ..basic.filters import *
 
-class BasicExchangeFilter(BasicEmailFilter):
+class ExchangeEmailAuthorFilter(BasicEmailAuthorFilter):
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, options: Optional[dict], author: str) -> None:
+        super().__init__(options, author)
+        
+        if self._options == None:
+            self._options = {}
 
-    def get_filtered_emails(self, all_emails):
-        return super().get_filtered_emails(all_emails)
-    
-    def get_query_function(self):
-        raise NotImplementedError()
-  
-class ExchangeEmailAuthorFilter(BasicExchangeFilter):
-
-    def __init__(self, author: str, contains: bool = False, like: bool = False) -> None:
-        self._author = author
-        self._contains = contains
-        self._like = like
-    
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
-
-    def get_query_function(self):
+        self._contains = self._options.get("contains", False)
+        self._like = self._options.get("like", False)
+            
+    def get_filter_func(self):
         if self._contains:
             if self._like:
                 return Q(sender__icontains=self._author)
@@ -35,19 +25,14 @@ class ExchangeEmailAuthorFilter(BasicExchangeFilter):
             return Q(sender__iexact=self._author)
         return Q(sender=self._author)
 
-class ExchangeEmailDateFilter(BasicExchangeFilter):
+class ExchangeEmailDateFilter(BasicEmailDateFilter):
 
-    def __init__(self, start_date: Optional[datetime.datetime], 
-                 end_date: Optional[datetime.datetime]) -> None:
-        self._start_date = start_date 
-        self._end_date = end_date 
+    def __init__(self, options: Optional[dict], start_date: datetime.datetime, end_date: datetime.datetime) -> None:
+        super().__init__(options, start_date, end_date)
         if self._start_date == None and self._end_date == None:
             raise Exception("At least one date should be specified")
 
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
-
-    def get_query_function(self):
+    def get_filter_func(self):
         query = None
         if self._start_date != None:
             query = Q(start__gte=self._start_date)
@@ -59,17 +44,18 @@ class ExchangeEmailDateFilter(BasicExchangeFilter):
                 query = Q(end__lte=self._end_date)
         
         return query
-        
-class ExchangeEmailSubjectFilter(BasicExchangeFilter):
-    def __init__(self, subject: str, contains: bool = False, like: bool = False) -> None:
-        self._subject = subject
-        self._contains = contains
-        self._like = like
 
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
+class ExchangeEmailSubjectFilter(BasicEmailSubjectFilter):
 
-    def get_query_function(self):
+    def __init__(self, options: Optional[dict], subject: str) -> None:
+        super().__init__(options, subject)
+        if self._options == None:
+            self._options = {}
+            
+        self._contains = self._options.get("contains", False)
+        self._like = self._options.get("like", False) 
+            
+    def get_filter_func(self):
         if self._contains:
             if self._like:
                 return Q(subject__icontains=self._subject)
@@ -78,4 +64,20 @@ class ExchangeEmailSubjectFilter(BasicExchangeFilter):
         if self._like:
             return Q(subject__iexact=self._subject)
         return Q(subject=self._subject)
- 
+
+class ExchangeEmailUnreadFilter(BasicEmailUnreadFilter):
+
+    def __init__(self, options: Optional[dict]) -> None:
+        super().__init__(options)
+
+    def get_filter_func(self):
+        return Q(is_read=False)
+
+available_exchange_filters = {
+        "subject": ExchangeEmailSubjectFilter,
+        "author": ExchangeEmailAuthorFilter,
+        "date": ExchangeEmailDateFilter,
+        "unread": ExchangeEmailUnreadFilter
+}
+
+

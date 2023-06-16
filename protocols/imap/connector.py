@@ -1,6 +1,6 @@
-from imap_tool.imap import *
+from .imap_tool.imap import *
 from ..basic.connector import BasicEmailConnector, BasicEmailHolder, EmailAccountInfo
-from .filters import BasicIMAPEmailFilter
+from ..basic.filters import BasicEmailFilter
 
 class IMAPEmailHolder(BasicEmailHolder):
 
@@ -8,8 +8,8 @@ class IMAPEmailHolder(BasicEmailHolder):
         super().__init__(all_emails)
         self._queries = []
 
-    def apply_filter(self, filter : BasicIMAPEmailFilter):
-        self._queries.append(filter.get_query_string())
+    def apply_filter(self, filter : BasicEmailFilter):
+        self._queries.append(filter.get_filter_func())
     
     def get_emails(self):
         if len(self._queries) == 0:
@@ -42,7 +42,6 @@ class IMAPEmailConnector(BasicEmailConnector):
                     )
                 )
         self._imap_login.login()
-        inbox = self._imap_login.mailbox()
 
     def get_all_emails(self):
         return IMAPEmailHolder(self._imap_login.mailbox())

@@ -1,50 +1,33 @@
 import datetime
 from typing import Optional
 
-from ..basic.connector import BasicEmailFilter
-from imap_tool.imap import *
+from ..basic.filters import * 
+from .imap_tool.imap import *
 
-class BasicIMAPEmailFilter(BasicEmailFilter):
+class IMAPEmailSubjectFilter(BasicEmailSubjectFilter):
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, options: Optional[dict], subject: str) -> None:
+        super().__init__(options, subject)
 
-    def get_filtered_emails(self, all_emails):
-        return super().get_filtered_emails(all_emails)
-
-    def get_query_string(self):
-        raise NotImplementedError()
-
-class IMAPEmailSubjectFilter(BasicIMAPEmailFilter):
-
-    def __init__(self, subject) -> None:
-        self._subject = subject
-        
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
-
-    def get_query_string(self):
+    def get_filter_func(self):
         return f"(SUBJECT {self._subject})" 
 
-class IMAPEmailDateFilter(BasicIMAPEmailFilter):
+class IMAPEmailDateFilter(BasicEmailDateFilter):
 
-    def __init__(self, start_date: Optional[datetime.datetime], 
-                 end_date: Optional[datetime.datetime], is_start_date_exact: bool = False,
-                 date_format: str = "%d-%b-%Y") -> None:
-        self._start_date = start_date 
-        self._end_date = end_date 
-        self._is_exact = is_start_date_exact
+    def __init__(self, options: Optional[dict], start_date: datetime.datetime, end_date: datetime.datetime) -> None:
+        super().__init__(options, start_date, end_date)
         if self._start_date == None and self._end_date == None:
             raise Exception("At least one date should be specified")
         if self._start_date == None and self._is_exact:
             raise Exception("Start time should be provided if exact time is needed")
 
-        self._date_format = date_format
+        if self._options == None:
+            self._options = {}
 
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
+        self._is_exact = self._options.get("is_start_date_exact", False)
+        self._date_format = self._options.get("date_format", "%d-%b-%Y")
     
-    def get_query_string(self):
+    def get_filter_func(self):
         query = "("
         if self._is_exact and self._start_date != None:
             query = f"(ON {self._start_date.strftime(self._date_format)})"
@@ -59,15 +42,25 @@ class IMAPEmailDateFilter(BasicIMAPEmailFilter):
         query += ")"
         return query
 
-class IMAPEmailAuthorFilter(BasicIMAPEmailFilter):
+class IMAPEmailAuthorFilter(BasicEmailAuthorFilter):
 
-    def __init__(self, author: str) -> None:
-        self._author = author
-    
-    def get_filtered_emails(self, all_emails):
-        raise NotImplementedError()
+    def __init__(self, options: Optional[dict], author: str) -> None:
+        super().__init__(options, author)
 
-    def get_query_string(self):
+    def get_filter_func(self):
         return f"(FROM {self._author})"
 
+class IMAPEmailUnreadFilter(BasicEmailUnreadFilter):
 
+    def __init__(self, options: Optional[dict]) -> None:
+        super().__init__(options)
+
+    def get_filter_func(self):
+        return "(UNSEEN)"
+
+available_imap_filters = {
+        "subject": IMAPEmailSubjectFilter,
+        "author": IMAPEmailAuthorFilter,
+        "date": IMAPEmailDateFilter,
+        "unread": IMAPEmailUnreadFilter
+}

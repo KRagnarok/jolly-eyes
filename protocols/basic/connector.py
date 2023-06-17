@@ -30,5 +30,5 @@ class BasicEmailConnector():
     def connect_and_auth(self):
         raise NotImplementedError()
 
-    def get_all_emails(self):
+    def get_all_emails(self) -> BasicEmailHolder:
         raise NotImplementedError()

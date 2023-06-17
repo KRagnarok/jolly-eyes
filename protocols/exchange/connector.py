@@ -45,5 +45,5 @@ class ExchangeEmailConnector(BasicEmailConnector):
         )
         self._is_connected = True
 
-    def get_all_emails(self):
+    def get_all_emails(self) -> BasicEmailHolder:
         return ExchangeEmailHolder(self._account.inbox)

@@ -43,5 +43,5 @@ class IMAPEmailConnector(BasicEmailConnector):
                 )
         self._imap_login.login()
 
-    def get_all_emails(self):
+    def get_all_emails(self) -> BasicEmailHolder:
         return IMAPEmailHolder(self._imap_login.mailbox())

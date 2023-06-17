@@ -73,11 +73,3 @@ class ExchangeEmailUnreadFilter(BasicEmailUnreadFilter):
     def get_filter_func(self):
         return Q(is_read=False)
 
-available_exchange_filters = {
-        "subject": ExchangeEmailSubjectFilter,
-        "author": ExchangeEmailAuthorFilter,
-        "date": ExchangeEmailDateFilter,
-        "unread": ExchangeEmailUnreadFilter
-}
-
-

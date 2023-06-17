@@ -1,6 +1,6 @@
-from ..basic.connector import BasicEmailHolder, BasicEmailConnector, EmailAccountInfo
+from ..basic.connector import BasicEmailHolder, BasicEmailConnector, EmailAccountInfo, EmailInfo
 from ..basic.filters import BasicEmailFilter
-from exchangelib import DELEGATE, Account, Configuration, Credentials
+from exchangelib import DELEGATE, Account, Configuration, Credentials, Message
 
 class ExchangeEmailHolder(BasicEmailHolder):
 
@@ -20,6 +20,16 @@ class ExchangeEmailHolder(BasicEmailHolder):
         for i in range(1, len(self._q_functions)):
             q = q & self._q_functions[i]
         return self._all_available_emails.filter(q)
+
+    def get_standard_email_info(self, email) -> EmailInfo:
+        author_name = self.get_proper_author_name(email.author.name, email.author.email_address)
+        return EmailInfo(
+             sender=author_name,
+             receiver=None,
+             subject=email.subject,
+             date=email.datetime_sent
+        )
+
 
 
 class ExchangeEmailConnector(BasicEmailConnector):

@@ -1,7 +1,7 @@
 
 from datetime import datetime
-from typing import Dict, List, Union
-from pydantic import BaseModel
+from typing import Any, Dict, List, Union
+from pydantic import BaseModel, StrictBool, StrictFloat, StrictInt, StrictStr
 
 from protocols.basic.filters import *
 from protocols.basic.visitor import BasicFilterVisitor
@@ -13,7 +13,16 @@ class EmailResponse(BaseModel):
     protocol: str
 
 class BaseFilter(BaseModel):
-    options: Optional[Dict[str, str]]
+    options: Optional[
+                Dict[str, Union[
+                        StrictStr,
+                        StrictInt,
+                        StrictBool,
+                        StrictFloat,
+                        List[Any]
+                    ]
+                ]
+            ]
 
     def fill_filter(self, visitor: BasicFilterVisitor) -> BasicEmailFilter:
         raise NotImplementedError()
@@ -60,13 +69,13 @@ class EmailFilterRequest(BaseModel):
     filters: List[Filter]
 
 
-class EmailInfo(BaseModel):
+class EmailInfoResponse(BaseModel):
     email: str
     subject: str
     author: str
-    # date: datetime.datetime
+    date: datetime.datetime
 
 class EmailFilterResponse(BaseModel):
-    emails: List[EmailInfo]
+    emails: List[EmailInfoResponse]
 
 

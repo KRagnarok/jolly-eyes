@@ -1,9 +1,7 @@
 #!/usr/bin/python3
-from logging import warn
-from fastapi import FastAPI, HTTPException, Response, status
+from fastapi import FastAPI, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
 from config import *
 from protocols.factory import ProtocolFactory, FilterVisitorFactory 
@@ -26,7 +24,7 @@ async def startup():
     config.parse_config()
     accounts = config.get_accounts()  
 
-@app.get("/email/list")
+@app.get("/emails/list")
 async def get_list_of_emails():
     list_of_emails = []
     for index, acc in enumerate(accounts):
@@ -36,7 +34,7 @@ async def get_list_of_emails():
     
     return list_of_emails
 
-@app.post("/filter-email")
+@app.post("/get-emails")
 async def get_emails(req: EmailFilterRequest) -> Response:
     if req.email_id < 0 or req.email_id >= len(accounts):
         return JSONResponse(
@@ -49,20 +47,19 @@ async def get_emails(req: EmailFilterRequest) -> Response:
     filter_visitor = FilterVisitorFactory.create_filter_visitor(acc.protocol.protocol_type) 
     
     for filter in req.filters:
-        print(filter)
         emails.apply_filter(
             filter.filter_body.fill_filter(filter_visitor)
         )
 
-    emails_ret: List[EmailInfo] = []
-    print(emails.get_emails())
+    emails_ret: List[EmailInfoResponse] = []
     for email in emails.get_emails():
+        email_info = emails.get_standard_email_info(email)
         emails_ret.append(
-                EmailInfo(
+                EmailInfoResponse(
+                    author=email_info.sender,
                     email=acc.email_auth_info.email_address,
-                    subject=email.subject,
-                    author=email.author
-                    # date=email.date
+                    date=email_info.date,
+                    subject=email_info.subject
                 )
         )
 

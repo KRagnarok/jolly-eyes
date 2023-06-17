@@ -1,5 +1,6 @@
+from datetime import datetime
 from .imap_tool.imap import *
-from ..basic.connector import BasicEmailConnector, BasicEmailHolder, EmailAccountInfo
+from ..basic.connector import BasicEmailConnector, BasicEmailHolder, EmailAccountInfo, EmailInfo
 from ..basic.filters import BasicEmailFilter
 
 class IMAPEmailHolder(BasicEmailHolder):
@@ -24,6 +25,16 @@ class IMAPEmailHolder(BasicEmailHolder):
         self._all_available_emails.filter_emails(query)
 
         return self._all_available_emails
+
+    def get_standard_email_info(self, email) -> EmailInfo:
+        print(email.date)
+        date_format = "%a, %d %b %Y %H:%M:%S %z"
+        return EmailInfo(
+             sender=email.author,
+             receiver=None,
+             subject=email.subject,
+             date=datetime.strptime(email.date, date_format)
+        )
     
 class IMAPEmailConnector(BasicEmailConnector):
 

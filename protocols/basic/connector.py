@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from datetime import datetime
+from typing import Union
 
 from .filters import BasicEmailFilter
 
@@ -10,6 +12,13 @@ class EmailAccountInfo():
     server_address: str
     server_port: int = -1
 
+@dataclass
+class EmailInfo():
+    sender: str
+    receiver: Union[str, None]
+    subject: str
+    date: datetime
+
 class BasicEmailHolder():
 
     def __init__(self, all_emails) -> None:
@@ -20,6 +29,12 @@ class BasicEmailHolder():
 
     def get_emails(self):
         raise NotImplementedError()
+
+    def get_standard_email_info(self, email) -> EmailInfo:
+        raise NotImplementedError()
+
+    def get_proper_author_name(self, author_name: str, author_email_address: str):
+        return f"{author_name} <{author_email_address}>"
 
 class BasicEmailConnector():
     

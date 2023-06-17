@@ -58,9 +58,3 @@ class IMAPEmailUnreadFilter(BasicEmailUnreadFilter):
     def get_filter_func(self):
         return "(UNSEEN)"
 
-available_imap_filters = {
-        "subject": IMAPEmailSubjectFilter,
-        "author": IMAPEmailAuthorFilter,
-        "date": IMAPEmailDateFilter,
-        "unread": IMAPEmailUnreadFilter
-}

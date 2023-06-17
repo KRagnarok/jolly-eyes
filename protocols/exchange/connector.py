@@ -30,8 +30,6 @@ class ExchangeEmailHolder(BasicEmailHolder):
              date=email.datetime_sent
         )
 
-
-
 class ExchangeEmailConnector(BasicEmailConnector):
 
     def __init__(self, email_acc_info : EmailAccountInfo):
@@ -57,3 +55,5 @@ class ExchangeEmailConnector(BasicEmailConnector):
 
     def get_all_emails(self) -> BasicEmailHolder:
         return ExchangeEmailHolder(self._account.inbox)
+
+

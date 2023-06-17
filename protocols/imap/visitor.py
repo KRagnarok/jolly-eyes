@@ -3,7 +3,6 @@ from ..basic.visitor import BasicFilterVisitor
 
 from .filters import *
 
-
 class IMAPFilterVisitor(BasicFilterVisitor):
 
     def get_date_filter(self) -> Type[BasicEmailDateFilter]:
@@ -17,3 +16,5 @@ class IMAPFilterVisitor(BasicFilterVisitor):
 
     def get_subject_filter(self) -> Type[BasicEmailSubjectFilter]:
         return IMAPEmailSubjectFilter
+
+

@@ -1,8 +1,6 @@
 from typing import Type
 from .filters import *
 
-
-
 class BasicFilterVisitor():
 
     def get_subject_filter(self) -> Type[BasicEmailSubjectFilter]:
@@ -16,3 +14,5 @@ class BasicFilterVisitor():
     
     def get_unread_filter(self) -> Type[BasicEmailUnreadFilter]:
         raise NotImplementedError()
+
+

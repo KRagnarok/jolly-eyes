@@ -7,7 +7,6 @@ from config import *
 from protocols.factory import ProtocolFactory, FilterVisitorFactory 
 from responses import *
 
-
 app = FastAPI()
 
 accounts: List[Account] = []
@@ -63,8 +62,8 @@ async def get_emails(req: EmailFilterRequest) -> Response:
                 )
         )
 
-
     return JSONResponse(
             content=jsonable_encoder(EmailFilterResponse(emails=emails_ret)),
             status_code=status.HTTP_200_OK)
         
+

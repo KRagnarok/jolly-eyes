@@ -73,3 +73,4 @@ class ExchangeEmailUnreadFilter(BasicEmailUnreadFilter):
     def get_filter_func(self):
         return Q(is_read=False)
 
+

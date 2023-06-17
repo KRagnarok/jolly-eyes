@@ -47,3 +47,5 @@ class BasicEmailConnector():
 
     def get_all_emails(self) -> BasicEmailHolder:
         raise NotImplementedError()
+
+

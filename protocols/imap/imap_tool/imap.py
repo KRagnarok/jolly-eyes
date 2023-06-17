@@ -4,7 +4,6 @@ from typing import Optional
 import email
 from email.header import decode_header
 
-
 class IMAP4Email():
 
     def __init__(self, msg) -> None:
@@ -33,7 +32,6 @@ class IMAP4Email():
 
     def parse_email_content(self):
         raise NotImplementedError()
-
        
 class IMAP4EmailIterator():
 
@@ -64,9 +62,7 @@ class IMAP4EmailIterator():
     def __iter__(self):
         return self
         
-
 class IMAP4EmailContainer():
-
 
     def __init__(self, imap_login, mailbox: str) -> None:
         self._imap_login = imap_login
@@ -75,7 +71,6 @@ class IMAP4EmailContainer():
         # On the other hand, when we do a search, imaplib returns all the emails that match the specified query, so it is now a list rather than a number. 
         # Thus, we need a way to differentiate between these two things so that we can iterate over them.
         self._is_search = False
-
 
     def filter_emails(self, query: str):
         typ, self._messages = self._imap_login.search(None, query)
@@ -87,7 +82,6 @@ class IMAP4EmailContainer():
 
     def __iter__(self):
         return IMAP4EmailIterator(self._messages, self._imap_login, self._is_search)
-        
 
 @dataclass
 class EmailAccountAuthInfo():
@@ -102,7 +96,6 @@ class IMAP4SSLAuthenticationWraper():
     def __init__(self, auth_info: EmailAccountAuthInfo) -> None:
         self._auth_info = auth_info
         self._list_of_available_mailboxes = {}
-
 
     def login(self):
         if self._auth_info.server_port == None or (self._auth_info.server_port < 0 or self._auth_info.server_port > 65535):

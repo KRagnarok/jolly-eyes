@@ -1,7 +1,6 @@
 import datetime
 from typing import Optional
 
-
 class BasicEmailFilter():
 
     def __init__(self, options: Optional[dict]) -> None:
@@ -18,7 +17,6 @@ class BasicEmailSubjectFilter(BasicEmailFilter):
 
     def get_filter_func(self):
         return super().get_filter_func()
-
 
 class BasicEmailDateFilter(BasicEmailFilter):
 
@@ -48,3 +46,5 @@ class BasicEmailUnreadFilter(BasicEmailFilter):
 
     def get_filter_func(self):
         return super().get_filter_func()
+
+

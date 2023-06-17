@@ -6,7 +6,6 @@ from pydantic import BaseModel, StrictBool, StrictFloat, StrictInt, StrictStr
 from protocols.basic.filters import *
 from protocols.basic.visitor import BasicFilterVisitor
 
-
 class EmailResponse(BaseModel):
     id: int
     email_address: str
@@ -56,7 +55,6 @@ class UnreadFilter(BaseFilter):
        return unread_filter(self.options) 
 
 class Filter(BaseModel):
-    filter_type: str
     filter_body: Union[
             SubjectFilter,
             AuthorFilter,

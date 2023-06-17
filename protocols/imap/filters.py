@@ -58,3 +58,4 @@ class IMAPEmailUnreadFilter(BasicEmailUnreadFilter):
     def get_filter_func(self):
         return "(UNSEEN)"
 
+

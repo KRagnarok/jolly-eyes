@@ -1,0 +1,13 @@
+{
+    "accounts": [
+        {
+            "email_address": "email@example.com",
+            "username": "username",
+            "password": "password",
+            "server_address": "exchange.example.com",
+            "protocol": {
+                "protocol_type": "Exchange"
+            }
+        }
+    ]
+}

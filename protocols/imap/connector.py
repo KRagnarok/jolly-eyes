@@ -27,7 +27,6 @@ class IMAPEmailHolder(BasicEmailHolder):
         return self._all_available_emails
 
     def get_standard_email_info(self, email) -> EmailInfo:
-        print(email.date)
         date_format = "%a, %d %b %Y %H:%M:%S %z"
         return EmailInfo(
              sender=email.author,

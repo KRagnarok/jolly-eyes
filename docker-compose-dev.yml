@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  jolly:
+    build: .
+    ports:
+      - 8000:80

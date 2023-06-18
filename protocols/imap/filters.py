@@ -4,6 +4,9 @@ from typing import Optional
 from ..basic.filters import * 
 from .imap_tool.imap import *
 
+# To get more information about different search and filter options visit the following link:
+# https://afterlogic.com/mailbee-net/docs/MailBee.ImapMail.Imap.Search_overload_2.html
+
 class IMAPEmailSubjectFilter(BasicEmailSubjectFilter):
 
     def __init__(self, options: Optional[dict], subject: str) -> None:

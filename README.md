@@ -10,7 +10,7 @@ Create a new file named **config.json** that has same structure as it is shown i
 communication protocol, currently IMAP and Exchange are supported, after that, you can run the app.
 
 ## Note
-This project is part of another project named **Toru**.
+This project is a service for another project named **Toru**.
 
 ## Remaining Tasks(In the long run)
 
@@ -21,3 +21,4 @@ This project is part of another project named **Toru**.
 - [ ] Add more protocols, such as Pop3
 - [ ] Support additional settings, such as routing a specific email through proxy or vpn
 - [ ] Add an authentication method to APIs
+- [ ] Add better error handling mechanisms
